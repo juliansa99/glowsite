@@ -1,17 +1,12 @@
 // ============================================================
-// CONFIGURACIÓN — editá estos valores antes de subir
+// CONFIGURACIÓN GLOW SITE
 // ============================================================
-const WHATSAPP_NUMERO  = "5491112345678"; // Tu número con código de país, sin el +
-const INSTAGRAM_USUARIO = "tu_usuario";   // Tu usuario de Instagram
+const WHATSAPP_NUMERO   = "541135888575";
+const INSTAGRAM_USUARIO = "glow.site";
 // ============================================================
 
 const desc = n => Math.round(n * 0.85);
 const fmt  = n => "$" + n.toLocaleString("es-AR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-// Lista de productos
-// El campo "img" es el nombre del archivo dentro de la carpeta images/
-// Ejemplo: img: "colageno.jpg"  →  el archivo tiene que estar en images/colageno.jpg
-// Si no tiene imagen todavía, dejá img: "" y se muestra el placeholder
 
 const productos = [
   { n: "Colágeno sachetera x 36 u.",                                    img: "", p: 20968 },
@@ -116,15 +111,15 @@ const productos = [
 ];
 
 // ── DOM refs ──────────────────────────────────────────────────
-const gridEl    = document.getElementById("grid");
-const countEl   = document.getElementById("count");
-const buscador  = document.getElementById("buscador");
-const modal     = document.getElementById("detalle");
+const gridEl   = document.getElementById("grid");
+const countEl  = document.getElementById("count");
+const buscador = document.getElementById("buscador");
+const modal    = document.getElementById("detalle");
 
 // ── Placeholder SVG ───────────────────────────────────────────
 const placeholderSVG =
   '<div class="img-placeholder">' +
-    '<svg viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.2">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.2">' +
       '<rect x="3" y="3" width="18" height="18" rx="2"/>' +
       '<circle cx="8.5" cy="8.5" r="1.5"/>' +
       '<polyline points="21 15 16 10 5 21"/>' +
@@ -133,22 +128,22 @@ const placeholderSVG =
 
 // ── Render grilla ─────────────────────────────────────────────
 function render(lista) {
-  countEl.textContent = lista.length + " productos";
+  countEl.textContent = lista.length + " productos encontrados";
   gridEl.innerHTML = "";
 
   lista.forEach(function(p) {
-    const pN   = desc(p.p);
-    const card = document.createElement("div");
+    var pN   = desc(p.p);
+    var card = document.createElement("div");
     card.className = "card";
 
-    const imgTag = p.img
+    var imgTag = p.img
       ? '<img src="images/' + p.img + '" alt="' + p.n + '" loading="lazy" />'
       : placeholderSVG;
 
     card.innerHTML =
       '<div class="img-box">' +
         imgTag +
-        '<div class="disc-tag">-15%</div>' +
+        '<div class="disc-tag">−15%</div>' +
       '</div>' +
       '<div class="card-body">' +
         '<p class="card-name">' + p.n + '</p>' +
@@ -156,7 +151,7 @@ function render(lista) {
           '<span class="precio-nuevo">' + fmt(pN) + '</span>' +
           '<span class="precio-viejo">' + fmt(p.p) + '</span>' +
         '</div>' +
-        '<button class="ver-btn">Ver producto &rarr;</button>' +
+        '<button class="ver-btn">Ver producto →</button>' +
       '</div>';
 
     card.addEventListener("click", function() { abrirProducto(p); });
@@ -164,14 +159,39 @@ function render(lista) {
   });
 }
 
+// ── Orden ─────────────────────────────────────────────────────
+var ordenActual = "default";
+
+function ordenar(lista) {
+  var copia = lista.slice();
+  if (ordenActual === "az")    return copia.sort(function(a, b) { return a.n.localeCompare(b.n, "es"); });
+  if (ordenActual === "za")    return copia.sort(function(a, b) { return b.n.localeCompare(a.n, "es"); });
+  if (ordenActual === "mayor") return copia.sort(function(a, b) { return b.p - a.p; });
+  if (ordenActual === "menor") return copia.sort(function(a, b) { return a.p - b.p; });
+  return copia;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelectorAll(".orden-btn").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+      document.querySelectorAll(".orden-btn").forEach(function(b) { b.classList.remove("active"); });
+      btn.classList.add("active");
+      ordenActual = btn.dataset.orden;
+      filtrarYRenderizar();
+    });
+  });
+});
+
 // ── Buscador ──────────────────────────────────────────────────
-buscador.addEventListener("input", function() {
-  const q = buscador.value.toLowerCase().trim();
-  const filtrados = q
+function filtrarYRenderizar() {
+  var q = buscador.value.toLowerCase().trim();
+  var filtrados = q
     ? productos.filter(function(p) { return p.n.toLowerCase().includes(q); })
     : productos;
-  render(filtrados);
-});
+  render(ordenar(filtrados));
+}
+
+buscador.addEventListener("input", filtrarYRenderizar);
 
 // ── Modal ─────────────────────────────────────────────────────
 function abrirProducto(p) {
@@ -179,7 +199,6 @@ function abrirProducto(p) {
   document.getElementById("det-viejo").textContent  = fmt(p.p);
   document.getElementById("det-nuevo").textContent  = fmt(desc(p.p));
 
-  // Imagen en el modal
   var mainEl  = document.getElementById("det-img-main");
   var thumbEl = document.getElementById("det-img-thumb");
   if (p.img) {
@@ -190,8 +209,7 @@ function abrirProducto(p) {
     thumbEl.innerHTML = placeholderSVG;
   }
 
-  // Mensaje automático para WhatsApp
-  var msg = encodeURIComponent("Hola! Me interesa: " + p.n + " — Precio con descuento: " + fmt(desc(p.p)));
+  var msg = encodeURIComponent("Hola Glow Site! Me interesa: " + p.n + " — Precio con descuento: " + fmt(desc(p.p)));
   document.getElementById("btn-wa").href =
     "https://wa.me/" + WHATSAPP_NUMERO + "?text=" + msg;
 
@@ -204,15 +222,13 @@ function cerrar() {
   document.body.style.overflow = "";
 }
 
-// Cerrar al hacer click fuera del modal
 modal.addEventListener("click", function(e) {
   if (e.target === modal) cerrar();
 });
 
-// Cerrar con ESC
 document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") cerrar();
 });
 
 // ── Init ──────────────────────────────────────────────────────
-render(productos);
+filtrarYRenderizar();
