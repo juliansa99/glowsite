@@ -757,3 +757,45 @@ footer span { font-size: 12px; color: #bbb; }
   .wa-fab { left: 12px; bottom: 16px; }
   .wa-fab::after { display: none; }
 }
+
+/* ── FILTRO POR MARCA ── */
+.marca-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.marca-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #e0dbd4;
+  background: #fff;
+  color: #888;
+  font-size: 12px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.marca-btn:hover { border-color: #b26ef7; color: #7c3aed; }
+.marca-btn.active { background: #7c3aed; border-color: #7c3aed; color: #fff; }
+
+/* Etiqueta de marca en la card */
+.marca-tag {
+  position: absolute;
+  bottom: 9px;
+  left: 9px;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.marca-mary-bosques      { background: #7c3aed; }
+.marca-fithocolor        { background: #0ea5e9; }
+.marca-brazilian-keratin { background: #16a34a; }
