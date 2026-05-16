@@ -102,16 +102,6 @@
       </div>
     </div>
 
-    <div class="marca-bar">
-      <span class="orden-label">Marca:</span>
-      <div class="orden-btns">
-        <button class="marca-btn active" data-marca="todas">Todas</button>
-        <button class="marca-btn" data-marca="Mary Bosques">Mary Bosques</button>
-        <button class="marca-btn" data-marca="Fithocolor">Fithocolor</button>
-        <button class="marca-btn" data-marca="Brazilian Keratin">Brazilian Keratin</button>
-      </div>
-    </div>
-
     <p class="count" id="count"></p>
 
     <!-- GRILLA -->
@@ -250,9 +240,31 @@
     <div class="cart-lista" id="cart-lista"></div>
 
     <div class="cart-footer" id="cart-acciones" style="display:none;">
-      <div class="cart-total-row">
-        <span class="cart-total-label">Total del pedido</span>
-        <span class="cart-total-val" id="cart-total-val">$0,00</span>
+
+      <!-- ENVÍO POR CP -->
+      <div class="cp-box">
+        <p class="cp-label">📍 Calculá el envío</p>
+        <div class="cp-row">
+          <input type="number" id="cp-input" class="cp-input" placeholder="Ej: 1425" maxlength="5" />
+          <button class="cp-btn" onclick="aplicarCP()">Calcular</button>
+        </div>
+        <p class="cp-msg" id="cp-msg"></p>
+      </div>
+
+      <!-- TOTALES -->
+      <div class="cart-resumen">
+        <div class="cart-resumen-row">
+          <span>Subtotal productos</span>
+          <span id="cart-subtotal-val">$0,00</span>
+        </div>
+        <div class="cart-resumen-row">
+          <span>Envío</span>
+          <span id="cart-envio-val">—</span>
+        </div>
+        <div class="cart-total-row">
+          <span class="cart-total-label">Total</span>
+          <span class="cart-total-val" id="cart-total-val">$0,00</span>
+        </div>
       </div>
       <p class="cart-total-sub">✦ Todos los precios incluyen 15% OFF</p>
       <div class="cart-footer-btns">
